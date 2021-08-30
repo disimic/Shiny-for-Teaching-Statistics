@@ -1,0 +1,12 @@
+---
+title: "CV"
+author: "Diana Šimić"
+date: '2021'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Diana Šimić is a full professor of statistics and research methods in information sciences at the Faculty of Organization and Informatics University of Zagreb, and the Chair of the Postgraduate doctoral study program Information Sciences. She also teaches statistics at the postgraduate doctoral study program of Biomedicine at the School of Medicine University of Zagreb. She participated in 23 research projects, supervised four doctoral candidates; (co)authored more than 60 research papers, 11 books, and four book chapters. She was an invited lecturer at more than 20 conferences. She is a member of the Croatian Biometric Society, Croatian Statistical Association, Croatian Information Technology Association, Croatian Society for Medical Informatics, American Statistical Association (ASA), and Association for Computing Machinery (ACM). She serves as the vice president on the Boards of the Croatian Biometric Society and the Croatian Information Technology Association.
