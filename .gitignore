@@ -28,3 +28,5 @@ vignettes/*.pdf
 .Renviron
 # html files
 *.html
+# RStudio Connect information
+rsconnect/*
