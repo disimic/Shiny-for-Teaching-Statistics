@@ -1,0 +1,68 @@
+---
+title: "Critical Value for a Confidence Interval"
+author: "Diana Šimić"
+date: "September 2021"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+How do we find the critical value for computing a margin of error for a confidence interval based on normal distribution? This animation displays the relationship between the confidence level and the critical value. For a confidence level $C$ , the critical value is the $C+\frac{1-C}{2}$-th quantile of the standard normal distribution. The green area is $C$, and the two red areas together are $1-C$.
+
+```{r echo = F}
+inputPanel(
+  sliderInput("C", label = "Razina pouzdanosti",
+              min = 0.6, max = 0.99, value = 0.9, step = 0.01, width = "300%"))
+```
+
+```{r echo = F, fig.height=6, fig.width=4}
+renderPlot({
+   x <- seq(-4, 4, length.out = 10000)
+   y <- dnorm(x)
+   C <- input$C
+   k2 <- (C+1) / 2
+   k1 <- 1 - k2
+   op <- par(no.readonly = T)
+   par(mar = c(5, 7, 1, 1))
+   par()
+   plot(x, y, type = "l", lwd = 2, xlab = "", ylab = "Gustoća", 
+        axes = F, cex.lab = 2)
+   axis(1, pos = 0, cex.axis = 1.5)
+   axis(2, las = 1, cex.axis = 1.5)
+   z1 <- qnorm(k1)
+   z2 <- qnorm(k2)
+   abline(v = c(z1, z2), lty = 2, lwd = 2, col = "red")
+   x1 <- seq(z1, z2, length.out = 1000)
+   y1 <- dnorm(x1)
+   polygon(c(x1, rev(x1)),
+           c(y1, rep(0, length(x1))),
+           col = "green")
+   text(0, .2, paste("C = ", C), col = "red", cex = 2.5)
+   x2 <- seq(-4, z1, length.out = 1000)
+   y2 <- dnorm(x2)
+   polygon(c(x2, rev(x2)),
+           c(y2, rep(0, length(x2))),
+           col = "red")
+   x3 <- seq(z2, 4, length.out = 1000)
+   y3 <- dnorm(x3)
+   polygon(c(x3, rev(x3)),
+           c(y3, rep(0, length(x3))),
+           col = "red")
+   text((z1-4)/2, 0.2, 
+        substitute(frac((1-C),2)==k1, list(k1=formatC(k1, format="f", digits=3))), 
+        col = "red", cex = 2)
+   text((z2+4)/2, 0.2, formatC(k1, format="f", digits=3), col = "red", cex = 2)
+   mtext(substitute(paste("z*=",z[k2],"=",z2, sep=""), list(k2=formatC(k2, format="f", digits=3), z2=formatC(z2, format="f", digits = 3))), 
+         1, 3, at = z2, cex = 2, col = "red", adj = 0)
+   mtext(substitute(paste(z[k1],"=-z*",sep=""), 
+                    list(k1 = formatC(k1, format="f", digits=3),
+                         k2 = formatC(k2, format="f", digits=3),
+                         z1 = formatC(z1, format="f", digits=3))),
+         1, 3, at = z1, cex = 2, col = "red", adj = 1)
+   par(op)
+})
+```
+
