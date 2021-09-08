@@ -1,0 +1,308 @@
+---
+title: "Using Shiny Apps in Teaching Statistics"
+author: "Diana Šimić"
+date: 'September 8, 2021'
+output: 
+  ioslides_presentation:
+    widescreen: true
+    transition: faster
+runtime: shiny
+---
+
+<style type="text/css">
+h3 {
+  text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2em;
+}
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(pander)
+```
+
+## Where do we start
+
+https://github.com/disimic/biostat2021
+
+
+## What do we need for the workshop?
+
+- Install R from https://www.r-project.org/
+- Install RStudio Desktop from https://www.rstudio.com/products/rstudio/
+- Open the script `install_packages.R` in RStudio and run
+
+How did you manage?   menti.com 8363 7556
+![](mentimeter_qr_code.png){width=30%}
+
+## What do you expect from the workshop?
+
+menti.com 8363 7556
+![](mentimeter_qr_code.png){width=30%}
+
+
+# Let's see some examples
+
+## Critical value for the confidence interval 
+
+- Open the github.com/disimic/biostat2021
+- Click on Links.md
+- Click on Critical value for a confidence interval 
+- Open menti.com and answer the question
+
+menti.com 8363 7556
+![](mentimeter_qr_code.png){width=30%}
+
+## Correlation and the linear regression
+
+- Open the github.com/disimic/biostat2021
+- Click on Links-md
+- Click on Correlation and linear regression
+- Try out tabs "Correlation Coefficient" and "The Least Squares"
+- Open menti.com and answer the question
+
+menti.com 8363 7556
+![](mentimeter_qr_code.png){width=30%}
+
+## How close did you get?
+
+- Open the github.com/disimic/biostat2021
+- Click on Links.md
+- Click on Correlation and linear regression
+- On tab One more example find the "real" values of regression coefficients.
+
+## Parts of a Shiny App {.flexbox .vcenter}
+
+<div class="columns-2">
+![](ConfIntApp.png){width=100%}
+
+- Title and static text and images (does not change)
+- Input (can be changed dinamically)
+- Output (depends on/changes with the Input)
+</div>
+
+## A simple Shiny app using Rmarkdown
+
+- From the File menu select New File => R Markdown
+- Type in a title and your name
+- On the left choose Shiny
+- For Default Output Format choose Shiny Document
+- Click OK
+- In the window of the new script click "Run Document"
+  - when asked provide a file name Example-1.Rmd
+
+
+## Parts of an R Markdown Shiny document  
+
+- YAML header
+- text (formatted using markdown)
+- R code chunks (this is where the magic happens)
+
+## YAML header
+
+```
+---
+title: ""
+author: ""
+date: ''
+output: html_document
+runtime: shiny
+---
+```
+
+Just fill in title, author, and date, and don't touch anything else :-)
+
+## R Markdown text
+
+```{r}
+pom <- data.frame(Function = c("Section headers:", "Paragraph:",
+                               "Bulleted list:",
+                               "Nested lists:",
+                               "Numbered list:",
+                               "Italics:",
+                               "Bold:"),
+                  Format=c("#, ##, ### at the beginning of a line ",
+                           "two spaces at the end of a line",
+                           "start a new line with a - or * or +",
+                           "indent the list",
+                           "start a new line with number 1. etc.",
+                           "put text between characters *",
+                           "put text between characters **"))
+pander(pom)
+```
+
+## R Code chunks
+
+- Code chunks start with ` ```{r} `, and end with ` ``` `  
+- Options can be added within the braces
+- Code in a chunk is run, and the output is included in the document
+
+For example chunk:
+
+` ```{r echo=TRUE} `  
+` 2+2 `  
+` ``` `  
+
+will result in:
+
+```{r echo=TRUE}
+2+2
+```
+
+## Shiny means reactive
+
+- Shiny package makes an R Markdown document reactive
+- `inputPanel()` is used to get input from a reader. Arguments are comma separated input controls
+-  `renderXXXX()` is used to create output that is automatically changed when input changes. XXXX can be Text, Plot, Image, Table etc. for different types of output
+
+
+## Shiny input functions 1/3{.smaller}
+
+`checkboxInput("Flag", "Is it blue?", value=FALSE)` 
+`renderPrint(paste("And the result is:", input$Flag))`
+
+```{r}
+checkboxInput("Flag", "Is it blue?", value=FALSE)
+renderPrint(paste("And the result is:", input$Flag))
+```
+
+<br><br>
+
+`selectInput("Select", "Select:", choices=c("A", "B", "C"), selected = "A", multiple = FALSE)`
+
+```{r}
+selectInput("Select", "Select:", choices=c("A", "B", "C"),
+            selected = "A", multiple = FALSE)
+renderPrint(paste("And the result is:", input$Select))
+```
+
+
+## Shiny input functions 2/3{.smaller}
+
+
+`radioButtons("rad.id", "Select:", choices=c("A", "B", "C"), selected = "A", inline=FALSE)`
+
+```{r}
+radioButtons("rad.id", "Select:", choices=c("A", "B", "C"), selected = "A", inline=FALSE)
+renderPrint(paste("And the result is:", input$rad.id))
+```
+
+<br>
+
+`numericInput("Number", "How long is it?", min = 1, max = 100, step = 1, value = 10 )`
+
+```{r}
+numericInput("Number", "How long is it?", min = 1, max = 100, step = 1, value = 10)
+renderPrint(paste("And the result is:", input$Number))
+```
+
+## Shiny input functions 3/3{.smaller}
+
+`sliderInput("Slide1", "How much?", min=1, max=10, step=0.1, value=5)`
+
+```{r}
+sliderInput("Slide1", "How much?", min=1, max=10, step=0.1, value=5)
+renderPrint(paste("And the result is:", input$Slide1))
+```
+
+<br>
+
+`sliderInput("Slide2", "What are the limits?", min=1, max=10, step=0.1, value=c(1,3))`
+
+```{r}
+sliderInput("Slide2", "How much?", min=1, max=10, step=0.1, value=c(1,3))
+renderPrint(paste("And the result is:", paste(input$Slide2, collapse = " to ")))
+```
+
+## Back to playing ...
+
+menti.com 8363 7556
+![](mentimeter_qr_code.png){width=30%}
+
+
+## Let's get working
+
+- Open the github.com/disimic/biostat2021
+- Click on Links.md
+- Click on Activity - Create your first Shiny document
+- Try to create a Shiny document that looks and reacts exactly like Example 2
+
+
+## Adding more structure
+
+- This is just a one page document.
+- More structure can be added using the package flexdashboard
+- Open the document "LinearRegression_en.Rmd"
+
+## The header
+
+```
+---
+title: "Correlation and linear regression"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+```
+
+Before, we had a simple line  
+```
+output: html_document
+```
+
+## Dashboard structure
+
+- With flexdashboard we can add structure
+- the first level headers introduce tabs ( with one # or double underscores)
+- the second level headers introduce columns ( with two ## or single underscore)
+- the third level headers introduce titles within columns, i.e. rows
+
+Special second order header:
+```
+Input {.sidebar}
+----------------
+```
+creates the left column with slightly different format.
+
+## Flexdashboard options
+
+With options in the YAML header we can change the layout of a dashboard  
+- orientation can be columns or rows  
+- vertical_layout can be fill or scroll  
+
+We can add options after column (row) headings  
+- {data-orientation=columns | rows}  
+- {data-width=}  
+- {data-height=}  
+
+## And now to your ideas
+
+Assignment: 
+
+- develop  an idea for a Shiny app that you would like to use in teaching your classes.
+- think about what are inputs, and what are outputs of that Shiny app
+- Open the github.com/disimic/biostat2021
+- Click on Links.md
+- Click on Activity - Add your ideas to a Google doc
+- In the Google doc write your 
+  - name or nick
+  - short description of your Shiny idea
+  - identify inputs and outputs
+
+--------------------------
+
+### Implement your idea!
+
+---------------------
+
+### Thank you!
+
+
+
