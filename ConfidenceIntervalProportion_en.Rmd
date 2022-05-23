@@ -1,0 +1,119 @@
+---
+title: "Confidence Interval for a Proportion"
+author: "Diana Šimić"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(flexdashboard)
+library(shiny)
+```
+
+
+Confidence interval coverage
+============================
+
+Input {.sidebar data-width=550}
+-------------------
+
+A large store buys apples wholesale. On delivery they perform quality control by selecting a random sample of size `n` and checking for any sign of damage (change in color, scratches, or bruising). Assuming that there were `k` damaged apples in the sample, what can we say about the proportion of damaged apples in the whole shipment? An unbiased estimate of the proportion of damaged apples in the shipment is the sample proportion. To find out how precise this estimate is, we compute a confidence interval.
+
+In this example we carry out a simulation experiment. We choose the proportion of damaged apples in the shipment, the sample size, confidence level, and number of random samples to draw. Each time you click "Compute" we simulate drawing of the selected number of samples, compute confidence interval for each sample, and draw these intervals in relation to the proportion of damaged apples in the shipment (population). Barchart at the bottom shows the percentage of confidence intervals that contain the population proportion (real coverage).
+
+```{r echo = F}
+inputPanel(
+  sliderInput("p0", label = "Proportion of damaged apples in the shipment",
+              min = 0, max = 1, value = 0.08, step = 0.05),
+  sliderInput("n", label = "Sample size (controlled apples)",
+              min = 30, max = 5000, value = 50, step = 1),
+  sliderInput("cl", label = "Confidence level (%)",
+              min = 70, max = 100, value = 90, step = 1),
+  selectInput("k", label= "Number of repetitions", choices = c(10, 50, 100, 500), selected = 50),
+  actionButton("go", "Compute")
+  )
+```
+
+Column {data-width=450}
+---------------------
+
+```{r echo = F, fig.height=6, fig.width=4}
+pom <- eventReactive(input$go, {
+   k <- as.numeric(input$k)
+   x <- rbinom(k, input$n, input$p0) / input$n
+   mg <- sqrt(x * (1-x) / input$n) * qnorm((input$cl/100+1)/2)
+   x.lo <- x - mg
+   x.hi <- x + mg
+   sadrzi <- (input$p0 >= x.lo) & (input$p0 <= x.hi)
+   boja <- rep("red", length(sadrzi))
+   boja[sadrzi] <- "green"
+   pokrivenost <- 100*sum(sadrzi)/length(sadrzi)
+   op <- par(no.readonly = T)
+   split.screen(
+      figs = matrix (c(0, 1, 0.3, 1,
+                       0, 1, 0, 0.3), nrow = 2, byrow = T))
+   screen(1)
+   par(mar = c(4,4,4,1.1))
+   plot(c(0, k+1), c(0.9*min(x.lo), 1.1*max(x.hi)), type = "n", las=1,
+        main = paste("Sample size ", input$n, "     Confidence level ", input$cl, 
+                     "%     Coverage ", 
+                     formatC(pokrivenost, format = "f", digits = 1, decimal.mark = ","), "%",
+                     collapse = ""),
+        ylab = "Proportion of damaged apples",
+        xlab = "Sample number")
+   points(1:k, x, col = boja, pch = 16)
+   for ( i in 1:k){
+      lines(c(i, i), c(x.lo[i], x.hi[i]), col = boja[i])
+      }
+   abline(h = input$p0, lty = 2)
+   screen(2)
+   par(mar = c(4,4,1,1.1))
+   barplot(c(DA = pokrivenost, NE = 100 - pokrivenost), horiz = T, pch=16,
+           xlim=c(0,100), col = c("green", "red"), xlab = "Coverage")
+   abline(v = input$cl, lty = 2)
+   close.screen(all.screens = T)
+   par(op)
+   }, ignoreNULL = F)
+renderPlot({pom()})
+```
+
+Confidence interval width
+============================
+
+Input {.sidebar data-width=350}
+-------------------
+
+Experiment with sample size, sample proportion, and confidence level to see how these values influence the width of a confidence interval:
+
+```{r echo = F}
+inputPanel(
+  sliderInput("n1", label = "Sample size",
+              min = 30, max = 5000, value = 50, step = 1, width = "300%"),
+  sliderInput("k1", label = "% on the sample",
+              min = 1, max = 99, value = 5, step = 1, width = "300%"),
+  sliderInput("cl1", label = "Confidence level",
+              min = 70, max = 99, value = 90, step = 1, width = "300%")
+  )
+```
+
+Column
+---------------------
+
+```{r echo = F, fig.height=6, fig.width=4}
+renderPlot({
+   x <- input$k1 / 100
+   mg <- sqrt(x * (1-x) / input$n1) * qnorm((input$cl1/100+1)/2)
+   x.lo <- x - mg
+   x.hi <- x + mg
+   plot(c(x.lo, x.hi), c(1,1), type = "l", las=1, lwd=2, col="red",
+        xlab = "Sample proportion",
+        ylab = "", xlim = c(-0.05, 1.05), ylim = c(0.9, 1.1),
+        main = paste("Confidence interval width ", 
+                     formatC((x.hi-x.lo), format="f", digits=3, decimal.mark = ","), collapse = ""))
+   points(x, 1, pch = 16)
+   })
+```
