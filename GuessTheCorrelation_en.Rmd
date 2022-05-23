@@ -1,0 +1,126 @@
+---
+title: "Pearson's Correlation Coefficient - Guess the Value"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(shiny)
+library(MASS)
+library(ggplot2)
+options(shiny.reactlog = TRUE)
+
+```
+
+
+Input {.sidebar}
+-------------------
+
+In this example you are shown a scatterplot. Try guessing the value of the Pearson's correlation coefficient for the two variables. 
+
+When you click on "Check!" the right panel will show you the true value, the number of attempts, and the descriptive statistics for all your errors (differences between your guesses and the true values) since you started the app.
+
+With "Clear history!" you can delete the history of previous attempts and start from a clean slate.
+
+```{r}
+actionButton("plot", "Draw a new scatterplot!")
+numericInput("r", label = "Guess the value of the Pearson's correlation coefficient!",
+              min = -1, max = 1, value = 0, step = 0.05)
+actionButton("go", "Check!") 
+tags$br() 
+tags$br()
+actionButton("clean", "Clear history!")
+```
+
+Column
+---------------------
+
+### Scatterplot
+
+```{r}
+table_data <- reactive({
+  pravi = runif(1, -1, 1)
+  pom <- mvrnorm(500, c(20,90), 
+                 matrix(c(4,pravi*6,pravi*6,9), nrow = 2), 
+                 empirical = T)
+  x <- pom[,1]
+  y <- pom[,2]
+  order(1)
+  list(pravi, data.frame(x=x, y=y))
+  }) %>% 
+  bindEvent(input$plot, ignoreNULL = FALSE)
+
+order <- reactiveVal(value = 1, label = "order")
+
+renderPlot({
+  plot(table_data()[[2]]$x, table_data()[[2]]$y,
+       xlab = "x",
+       ylab = "y",
+       pch = 16, col = "blue",
+       xlim = c(14, 26), ylim = c(80, 100), las = 1
+  )
+  pom <- lm(table_data()[[2]]$y~table_data()[[2]]$x)
+  abline(pom, lwd=2, col = "red")
+})
+```
+
+Column
+---------------------
+
+### Results
+
+```{r}
+podaci <- reactiveValues(pravi = numeric(), 
+                         pokusaj = numeric(), 
+                         razlike = numeric())
+
+observe({
+  if (order() == 1) {
+    podaci$pravi <- c(podaci$pravi, table_data()[[1]])
+  podaci$pokusaj <- c(podaci$pokusaj, input$r)
+  podaci$razlike <- podaci$pokusaj - podaci$pravi
+  }
+  order(2)
+  }) %>%
+  bindEvent(input$go)
+
+observe({
+  podaci$pravi <- c()
+  podaci$pokusaj <- c()
+  podaci$razlike <- c()
+  }) %>%
+  bindEvent(input$clean)
+
+renderPrint({
+  n <- length(podaci$razlike)
+  cat(paste0("The true value is ", formatC(podaci$pravi[n],
+                                    format = "f",
+                                    digits = 3), "\n"))
+  cat("\nDescriptive statistics for errors\n")
+  cat(paste0("Number of attempts: ", n,"\n"))
+  print(summary(podaci$razlike))
+})
+```
+
+### Error distribution
+
+```{r}
+renderPlot({
+  if (length(podaci$razlike)>0) {
+    ggplot(data = data.frame(razlike = podaci$razlike), aes(x=razlike)) +
+    geom_density(fill=5) +
+    geom_histogram() +
+    xlab("Error") +
+    ylab("Count") 
+  }
+})
+```
+
+
+
