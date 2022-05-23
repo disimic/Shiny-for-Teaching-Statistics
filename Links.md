@@ -6,7 +6,7 @@
 
 [Example - Guess the correlation regression](https://dsimic.shinyapps.io/GuessTheCorrelation_en/)
 
-[Activity - Create your first Shiny document](https://r.foi.hr/content/fda30099-210c-4b16-a15d-2a4e912541bc)
+[Activity - Create your first Shiny document](https://dsimic.shinyapps.io/Example-2/)
 
 [Activity - Add your ideas to a Google doc](https://docs.google.com/document/d/19fEguJsJzkC6P0sosMRA8UalseAe_acfzqPL5egaSf4/edit?usp=sharing)
 
