@@ -39,17 +39,17 @@ https://github.com/disimic/Shiny-for-Teaching-Statistics
 
 # Let's see some examples
 
-## Critical value for the confidence interval 
+## Critical value for the confidence interval {.build}
 
->- Open the https://github.com/disimic/Shiny-for-Teaching-Statistics
->- Click on *Links.md*
->- Click on *Critical value for a confidence interval*
+- Open the https://github.com/disimic/Shiny-for-Teaching-Statistics
+- Click on *Links.md*
+- Click on *Critical value for a confidence interval*
 
 or 
 
->- Open RStudio
->- Open document *ConfidenceIntervalCriticalValue_en.Rmd*
->- Click on "Run Document"
+- Open RStudio
+- Open document *ConfidenceIntervalCriticalValue_en.Rmd*
+- Click on "Run Document"
 
 ## Let's play with menti
 
@@ -58,10 +58,11 @@ Open menti.com and answer the question
 menti.com 74 64 78 3
 ![](mentimeter_qr_code.png){width=30%}
 
-## More examples
+## More examples {.build}
 
-- ConfidenceIntervalProportion_en.Rmd
-- GuessTheCorrelation_en.Rmd
+ConfidenceIntervalProportion_en.Rmd  
+
+GuessTheCorrelation_en.Rmd
 
 # R, RStudio, Rmarkdown and Shiny
 
@@ -69,8 +70,8 @@ menti.com 74 64 78 3
 
 > - Programming language and environment for statistical computing
 > - Along with Python the language most used for data science, statistics and data analytics
-> - Open source and free (as a bird and without cost) http://www.r-project.org 
-> - Flexible - extendable with packages (more than 18500 packages)
+> - Open source and free (as a bird and without cost) http://www.r-project.org
+> - Flexible - extendable with packages (more than 18500 packages)  
 
 ## Some R history
 
@@ -240,12 +241,12 @@ will result in:
 
 ```{r echo =TRUE, results='hide'}
 checkboxInput("Flag", "Is it blue?", value=FALSE)
-renderPrint(cat(paste("And the result is:", input$Flag)))
+renderText(paste("And the result is:", input$Flag))
 ```
 
 ```{r}
 checkboxInput("Flag", "Is it blue?", value=FALSE)
-renderPrint(cat(paste("And the result is:", input$Flag)))
+renderText(paste("And the result is:", input$Flag))
 ```
 
 <br>
@@ -253,13 +254,13 @@ renderPrint(cat(paste("And the result is:", input$Flag)))
 ```{r echo = TRUE, results='hide'}
 selectInput("Select", "Select:", choices=c("A", "B", "C"),
             selected = "A", multiple = FALSE)
-renderPrint(cat(paste("And the result is:", input$Select)))
+renderText(paste("And the result is:", input$Select))
 ```
 
 ```{r}
 selectInput("Select", "Select:", choices=c("A", "B", "C"),
             selected = "A", multiple = FALSE)
-renderPrint(cat(paste("And the result is:", input$Select)))
+renderText(paste("And the result is:", input$Select))
 ```
 
 
@@ -267,48 +268,48 @@ renderPrint(cat(paste("And the result is:", input$Select)))
 
 ```{r echo =TRUE, results='hide'}
 radioButtons("rad.id", "Select:", choices=c("A", "B", "C"), selected = "A", inline=FALSE)
-renderPrint(cat(paste("And the result is:", input$rad.id)))
+renderText(paste("And the result is:", input$rad.id))
 ```
 
 ```{r}
 radioButtons("rad.id", "Select:", choices=c("A", "B", "C"), selected = "A", inline=FALSE)
-renderPrint(cat(paste("And the result is:", input$rad.id)))
+renderText(paste("And the result is:", input$rad.id))
 ```
 
 <br>
 
 ```{r echo =TRUE, results='hide'}
 numericInput("Number", "How long is it?", min = 1, max = 100, step = 1, value = 10)
-renderPrint(cat(paste("And the result is:", input$Number)))
+renderText(paste("And the result is:", input$Number))
 ```
 
 ```{r}
 numericInput("Number", "How long is it?", min = 1, max = 100, step = 1, value = 10)
-renderPrint(cat(paste("And the result is:", input$Number)))
+renderText(paste("And the result is:", input$Number))
 ```
 
 ## Shiny input functions 3/3{.smaller}
 
 ```{r echo =TRUE, results='hide'}
 sliderInput("Slide1", "How much?", min=1, max=10, step=0.1, value=5)
-renderPrint(cat(paste("And the result is:", input$Slide1)))
+renderText(paste("And the result is:", input$Slide1))
 ```
 
 ```{r}
 sliderInput("Slide1", "How much?", min=1, max=10, step=0.1, value=5)
-renderPrint(cat(paste("And the result is:", input$Slide1)))
+renderText(paste("And the result is:", input$Slide1))
 ```
 
 <br>
 
 ```{r echo =TRUE, results='hide'}
 sliderInput("Slide2", "How much?", min=1, max=10, step=0.1, value=c(1,3))
-renderPrint(cat(paste("And the result is:", paste(input$Slide2, collapse = " to "))))
+renderText(paste("And the result is:", paste(input$Slide2, collapse = " to ")))
 ```
 
 ```{r}
 sliderInput("Slide2", "How much?", min=1, max=10, step=0.1, value=c(1,3))
-renderPrint(cat(paste("And the result is:", paste(input$Slide2, collapse = " to "))))
+renderText(paste("And the result is:", paste(input$Slide2, collapse = " to ")))
 ```
 
 ## Back to playing ...
@@ -316,13 +317,90 @@ renderPrint(cat(paste("And the result is:", paste(input$Slide2, collapse = " to 
 menti.com  74 64 78 3
 ![](mentimeter_qr_code.png){width=30%}
 
+## Shiny render functions 1/3{.smaller}
 
-## Reactivity {.flexbox .vcenter}
+```{r echo=TRUE, results='hide'}
+sliderInput("Slide3", "N", min=30, max=1000, step=1, value=100)
+renderText(paste("N = ", input$Slide3))
+```
+
+```{r}
+sliderInput("Slide3", "N", min=30, max=1000, step=1, value=100)
+renderText(paste("N = ", input$Slide3))
+```
+
+<br>
+
+```{r echo=TRUE, results='hide'}
+sliderInput("Slide4", "N", min=30, max=1000, step=1, value=100)
+renderPrint(paste("N = ", input$Slide4))
+```
+
+```{r}
+sliderInput("Slide4", "N", min=30, max=1000, step=1, value=100)
+renderPrint(paste("N = ", input$Slide4))
+```
+
+
+
+## Shiny render functions 2/3{.smaller}
+
+<div class="columns-2">
+
+```{r echo=TRUE, results='hide'}
+sliderInput("Slide5", "N", 
+            min=30, max=1000, 
+            step=1, value=100)
+renderPlot({
+  x <- rnorm(input$Slide5)
+  hist(x)}, 
+  width = 500, 
+  height = 300)
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+```{r}
+sliderInput("Slide5", "N", min=30, max=1000, step=1, value=100)
+renderPlot({x <- rnorm(input$Slide5)
+hist(x)}, width = 500, height = 300)
+```
+
+</div>
+
+
+## Shiny render functions 3/3
+
+- renderTable()
+- renderDataTable()
+- renderImage()
+
+
+## Back to playing ...
+
+menti.com  74 64 78 3
+![](mentimeter_qr_code.png){width=30%}
+
+
+
+
+## Reactivity graph {.flexbox .vcenter}
 
 ![](ReactivityGraph.png){width=80%}
 
 - Shows dependence between reactive code parts
 - When a reactive object changes value, code parts that depend on it become invalidated (need to be executed again)
+
+
+## Sequencing {.flexbox .vcenter}
+
+![](ReactivityGraph_2.png){width=90%}
 
 
 ## Let's get working
