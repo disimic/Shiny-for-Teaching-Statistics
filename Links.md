@@ -14,7 +14,7 @@
 
 [Book - Wickham, H (2020) Mastering Shiny](https://mastering-shiny.org/)
 
-[Cheatsheet - Shiny](https://github.com/rstudio/cheatsheets/raw/master/shiny.pdf)
+[Cheatsheet - Shiny](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
 
 [Other resources - Shiny Homepage](https://shiny.rstudio.com/)
 
