@@ -475,13 +475,10 @@ Assignment:
   - short description of your Shiny idea
   - identify inputs and outputs
 
---------------------------
 
-### Implement your idea!
+# Implement your idea!
 
----------------------
-
-### Thank you!
+# Thank you!
 
 
 
