@@ -415,13 +415,14 @@ menti.com  74 64 78 3
 
 - This is just a one page document.
 - More structure can be added using the package flexdashboard
-- Open the document "LinearRegression_en.Rmd"
+- Open the document "ConfidenceIntervalProportion_en.Rmd"
 
 ## The header
 
 ```
 ---
-title: "Correlation and linear regression"
+title: "Confidence Interval for a Proportion"
+author: "Diana Šimić"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
@@ -464,9 +465,9 @@ We can add options after column (row) headings
 
 Assignment: 
 
-- develop  an idea for a Shiny app that you would like to use in teaching your classes.
-- think about what are inputs, and what are outputs of that Shiny app
-- Open the github.com/disimic/biostat2021
+- Develop  an idea for a Shiny app that you would like to use in teaching your classes.
+- Think about what are inputs, and what are outputs of that Shiny app
+- Open the https://github.com/disimic/Shiny-for-Teaching-Statistics
 - Click on Links.md
 - Click on Activity - Add your ideas to a Google doc
 - In the Google doc write your 
