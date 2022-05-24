@@ -8,6 +8,7 @@ runtime: shiny
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+options(shiny.reactlog = TRUE)
 ```
 
 How do we find the critical value for computing a margin of error of a confidence interval based on normal distribution? 

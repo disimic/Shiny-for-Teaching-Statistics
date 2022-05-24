@@ -4,7 +4,7 @@
 
 [Example - Coverage and width of a confidence interval](https://dsimic.shinyapps.io/ConfidenceIntervalProportion_en/)
 
-[Example - Guess the correlation regression](https://dsimic.shinyapps.io/GuessTheCorrelation_en/)
+[Example - Guess the correlation coefficient](https://dsimic.shinyapps.io/GuessTheCorrelation_en/)
 
 [Activity - Create your first Shiny document](https://dsimic.shinyapps.io/Example-2/)
 
