@@ -9,39 +9,43 @@ runtime: shiny
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
+library(tidyverse)
+library(plotly)
 library(shiny)
-set.seed(12546)
+library(MASS)
 
 x1 <- rnorm(500, 15, 2) - 10
 y1 <- 5*x1 + 54 + rnorm(500, 0, 6)
 lm.xy <- lm(y1 ~ x1)
 ```
 
-Correlation Coefficient
-===================
+Correlation coefficient
+=======================
 
 Input {.sidebar}
 -------------------
 
-In this example we can dynamically choose a value of Pearson's correlation coefficient between two variables, and see the scatterplot between them. 
+
+In this example you can choose a value of the correlation coefficient between two variables, and see their scatterplot.
 
 ```{r}
-sliderInput("r", label = "Correlation coefficient",
+sliderInput("r", label = "Corelation coefficient",
               min = -1, max = 1, value = 0, step = 0.05)
 ```
 
 
-Stupac
+Column
 ---------------------
 
 ### Scatterplot
 
 ```{r}
 renderPlot({
-  x <- rnorm(500, 0, 1)
-  y <- input$r*input$r*sign(input$r)*x + (1 - input$r*input$r)*rnorm(500, 0, 1)
-  x <- 2*x + 20
-  y <- 3*y + 90
+  pom <- mvrnorm(500, c(20,90), 
+                 matrix(c(4,input$r*6,input$r*6,9), nrow = 2), 
+                 empirical = T)
+  x <- pom[,1]
+  y <- pom[,2]
   plot(x, y,
        xlab = "x",
        ylab = "y",
@@ -54,13 +58,13 @@ renderPlot({
 })
 ```
 
-The Least Squares
-=========================
+Minimize sum of squared residuals
+=================================
 
 Input {.sidebar data-width=300}
 -------------------
 
-In linear regression we estimate values of regression coefficients by minimizing the sum of squares of residuals. Try to find the regression coefficients in this example manually by sliding the input slides to minimize the sum of squares.
+Try choosing the regression coefficient and the regression constant to minimize the sum of squared residuals. Compare your result with the result of the R function `lm()` on the next tab.
 
 ```{r}
 
@@ -73,10 +77,10 @@ inputPanel(
   )
 ```
 
-Stupac {data-width=700}
+Column {data-width=700}
 ---------------------
 
-### Scatterplot with the Chosen Line
+### Scatterplot with your best line
 
 ```{r}
 renderPlot({
@@ -95,8 +99,8 @@ renderPlot({
 })
 ```
 
-One more example
-========================================
+Linear regression
+===============================
 
 ```{r}
 renderPlot({
