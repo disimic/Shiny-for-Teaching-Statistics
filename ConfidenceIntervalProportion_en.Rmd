@@ -41,6 +41,8 @@ inputPanel(
 Column {data-width=450}
 ---------------------
 
+### This is a 3rd level header
+
 ```{r echo = F, fig.height=6, fig.width=4}
 pom <- eventReactive(input$go, {
    k <- as.numeric(input$k)
@@ -78,13 +80,14 @@ pom <- eventReactive(input$go, {
    close.screen(all.screens = T)
    par(op)
    }, ignoreNULL = F)
+
 renderPlot({pom()})
 ```
 
 Confidence interval width
 ============================
 
-Input {.sidebar data-width=350}
+Input {.sidebar}
 -------------------
 
 Experiment with sample size, sample proportion, and confidence level to see how these values influence the width of a confidence interval:
